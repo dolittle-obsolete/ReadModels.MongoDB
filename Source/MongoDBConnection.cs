@@ -1,3 +1,4 @@
+using Dolittle.Resources.Configuration;
 using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
 
@@ -11,10 +12,11 @@ namespace Dolittle.ReadModels.MongoDB
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="config"></param>
-        public Connection(Configuration config)
+        /// <param name="configurationWrapper"></param>
+        public Connection(IConfigurationFor<ReadModelRepositoryConfiguration> configurationWrapper)
         {
-            var s = MongoClientSettings.FromUrl(new MongoUrl(config.Url));
+            var config = configurationWrapper.Instance;
+            var s = MongoClientSettings.FromUrl(new MongoUrl(config.Host));
             if (config.UseSSL)
             {
                 s.UseSsl = true;
@@ -26,7 +28,7 @@ namespace Dolittle.ReadModels.MongoDB
             }
 
             Server = new MongoClient(s);
-            Database = Server.GetDatabase(config.DefaultDatabase);
+            Database = Server.GetDatabase(config.Database);
 
             BsonSerializer.RegisterSerializationProvider(new ConceptSerializationProvider());
         }
