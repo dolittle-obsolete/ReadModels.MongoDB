@@ -17,7 +17,8 @@ namespace Dolittle.ReadModels.MongoDB
         public Type ConfigurationObjectType => typeof(ReadModelRepositoryConfiguration);
         /// <inheritdoc/>
         public IDictionary<Type, Type> Bindings {
-            get {
+            get 
+            {
                 if (_bindings == null) 
                     InitializeBindings();
                 
