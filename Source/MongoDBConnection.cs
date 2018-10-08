@@ -1,3 +1,7 @@
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Dolittle. All rights reserved.
+ *  Licensed under the MIT License. See LICENSE in the project root for license information.
+ * --------------------------------------------------------------------------------------------*/
 using Dolittle.Resources.Configuration;
 using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
@@ -16,18 +20,22 @@ namespace Dolittle.ReadModels.MongoDB
         public Connection(IConfigurationFor<ReadModelRepositoryConfiguration> configurationWrapper)
         {
             var config = configurationWrapper.Instance;
-            var s = MongoClientSettings.FromUrl(new MongoUrl(config.Host));
-            if (config.UseSSL)
+            if (string.IsNullOrEmpty(config.ConnectionString))
             {
-                s.UseSsl = true;
-                s.SslSettings = new SslSettings
+                var s = MongoClientSettings.FromUrl(new MongoUrl(config.Host));
+                if (config.UseSSL)
                 {
-                    EnabledSslProtocols = System.Security.Authentication.SslProtocols.Tls12,
-                    CheckCertificateRevocation = false
-                };
+                    s.UseSsl = true;
+                    s.SslSettings = new SslSettings
+                    {
+                        EnabledSslProtocols = System.Security.Authentication.SslProtocols.Tls12,
+                        CheckCertificateRevocation = false
+                    };
+                }
+                Server = new MongoClient(s);
             }
-
-            Server = new MongoClient(s);
+            else
+                Server = new MongoClient(config.ConnectionString);
             Database = Server.GetDatabase(config.Database);
 
             BsonSerializer.RegisterSerializationProvider(new ConceptSerializationProvider());
