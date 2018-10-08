@@ -17,6 +17,10 @@ namespace Dolittle.ReadModels.MongoDB
         /// Gets or sets whether or not use SSL
         /// </summary>
         public bool UseSSL { get; set; }
+        /// <summary>
+        /// Gets or sets the connection string for the configuration
+        /// </summary>
+        public string ConnectionString { get; set; }
      
      }
 }
