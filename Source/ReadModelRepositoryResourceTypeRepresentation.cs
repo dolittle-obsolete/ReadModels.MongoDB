@@ -10,7 +10,7 @@ namespace Dolittle.ReadModels.MongoDB
         IDictionary<Type, Type> _bindings;
         
         /// <inheritdoc/>
-        public ResourceType Type => "ReadModels";
+        public ResourceType Type => "readModels";
         /// <inheritdoc/>
         public ResourceTypeImplementation ImplementationName => "MongoDB";
         /// <inheritdoc/>
