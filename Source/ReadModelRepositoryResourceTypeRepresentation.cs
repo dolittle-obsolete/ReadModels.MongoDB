@@ -11,7 +11,10 @@ namespace Dolittle.ReadModels.MongoDB
     /// <inheritdoc/>
     public class ReadModelRepositoryResourceTypeRepresentation : IRepresentAResourceType
     {
-        IDictionary<Type, Type> _bindings;
+        static IDictionary<Type, Type> _bindings = new Dictionary<Type, Type>
+        {
+            {typeof(IReadModelRepositoryFor<>), typeof(ReadModelRepositoryFor<>)}
+        };
         
         /// <inheritdoc/>
         public ResourceType Type => "readModels";
@@ -20,20 +23,6 @@ namespace Dolittle.ReadModels.MongoDB
         /// <inheritdoc/>
         public Type ConfigurationObjectType => typeof(ReadModelRepositoryConfiguration);
         /// <inheritdoc/>
-        public IDictionary<Type, Type> Bindings {
-            get 
-            {
-                if (_bindings == null) 
-                    InitializeBindings();
-                
-                return _bindings;
-           }
-        }
-
-        void InitializeBindings()
-        {
-            _bindings = new Dictionary<Type, Type>();
-            _bindings.Add(typeof(IReadModelRepositoryFor<>), typeof(ReadModelRepositoryFor<>));
-        }
+        public IDictionary<Type, Type> Bindings => _bindings;
     }
 }
