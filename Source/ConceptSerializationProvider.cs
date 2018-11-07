@@ -17,9 +17,22 @@ namespace Dolittle.ReadModels.MongoDB
         public IBsonSerializer GetSerializer(Type type)
         {
             if (type.IsConcept())
-                return new ConceptSerializer(type);
-
+            {
+                var createConceptSerializerGenericMethod = this.GetType().GetMethod("CreateConceptSerializer").MakeGenericMethod(type);
+                dynamic serializer = createConceptSerializerGenericMethod.Invoke(null, new object[]{});
+                return serializer;
+            }
+                
             return null;
+        }
+        /// <summary>
+        /// Creates an instance of a serializer of the concept of the given type param T
+        /// </summary>
+        /// <typeparam name="T">The Concept type</typeparam>
+        /// <returns></returns>
+        public static ConceptSerializer<T> CreateConceptSerializer<T>()
+        {
+            return new ConceptSerializer<T>();
         }
     }
 }
