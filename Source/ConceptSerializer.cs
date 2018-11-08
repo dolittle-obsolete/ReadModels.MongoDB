@@ -7,74 +7,61 @@ using System;
 using System.Reflection;
 using Dolittle.Concepts;
 using MongoDB.Bson;
+using MongoDB.Bson.IO;
 using MongoDB.Bson.Serialization;
 
 namespace Dolittle.ReadModels.MongoDB
 {
-    /// <summary>
-    /// 
-    /// </summary>
-    public class ConceptSerializer : IBsonSerializer
+    /// <inheritdoc/>
+    public class ConceptSerializer<T> : IBsonSerializer<T>
     {
-        /// <summary>
-        /// Initializes a new instance of <see cref="ConceptSerializer"/>
-        /// </summary>
-        /// <param name="conceptType"></param>
-        public ConceptSerializer(Type conceptType)
-        {
-            if (!conceptType.IsConcept())
-                throw new ArgumentException("Type is not a concept.", nameof(conceptType));
+        /// <inheritdoc/>
+        public Type ValueType { get; }
+        /// <inheritdoc/>
 
-            ValueType = conceptType;
+        public ConceptSerializer()
+        {
+            ValueType = typeof(T);
+
+            if (!ValueType.IsConcept())
+                throw new Exception("Not a concept");
+
         }
 
-        /// <summary>
-        /// Gets the value type the serializer supports - our <see cref="ConceptAs{T}">concept</see>
-        /// </summary>
-        public Type ValueType { get; }
-
         /// <inheritdoc/>
-        public object Deserialize(BsonDeserializationContext context, BsonDeserializationArgs args)
+        public T Deserialize(BsonDeserializationContext context, BsonDeserializationArgs args)
         {
             var bsonReader = context.Reader;
+
             var actualType = args.NominalType;
 
             object value = null;
 
-            var valueType = actualType.GetConceptValueType();
-            if (valueType == typeof(Guid))
-            {
-                var binaryData = bsonReader.ReadBinaryData();
-                value = binaryData.ToGuid();
-            }
-            else if (valueType == typeof(double))
-                value = bsonReader.ReadDouble();
-            else if (valueType == typeof(float))
-                value = (float)bsonReader.ReadDouble();
-            else if (valueType == typeof(Int32))
-                value = bsonReader.ReadInt32();
-            else if (valueType == typeof(Int64))
-                value = bsonReader.ReadInt64();
-            else if (valueType == typeof(bool))
-                value = bsonReader.ReadBoolean();
-            else if (valueType == typeof(string))
-                value = bsonReader.ReadString();
-            else if (valueType == typeof(decimal))
-                value = decimal.Parse(bsonReader.ReadString());
+            BsonType bsonType = bsonReader.GetCurrentBsonType();
 
-            var concept = ConceptFactory.CreateConceptInstance(actualType, value);
+            var valueType = actualType.GetConceptValueType();
+            if (bsonType == BsonType.Document) // It should be a Concept object
+            {
+                bsonReader.ReadStartDocument();
+                var keyName = bsonReader.ReadName(Utf8NameDecoder.Instance);
+                if (keyName == "Value" || keyName == "value")
+                {
+                    value = GetDeserializedValue(valueType, ref bsonReader);
+                    bsonReader.ReadEndDocument();
+                }
+                else throw new FailedConceptSerialization("Expected a concept object, but no key named 'Value' or 'value' was found on the object");
+            }
+            else
+                value = GetDeserializedValue(valueType, ref bsonReader);
+
+            dynamic concept = ConceptFactory.CreateConceptInstance(ValueType, value);
+
             return concept;
         }
 
-        /// <inheritdoc/>
-        public bool GetDocumentId(object document, out object id, out Type idNominalType, out IIdGenerator idGenerator)
-        {
-            id = null;
-            idGenerator = null;
-            idNominalType = null;
-            return false;
-        }
-
+        object IBsonSerializer.Deserialize(BsonDeserializationContext context, BsonDeserializationArgs args) => this.Deserialize(context, args); 
+        
+        
         /// <inheritdoc/>
         public void Serialize(BsonSerializationContext context, BsonSerializationArgs args, object value)
         {
@@ -103,7 +90,44 @@ namespace Dolittle.ReadModels.MongoDB
             else if (underlyingValueType == typeof(string))
                 bsonWriter.WriteString((string)(underlyingValue ?? string.Empty));
             else if (underlyingValueType == typeof(decimal))
-                bsonWriter.WriteString(underlyingValue?.ToString()?? default(decimal).ToString());
+                bsonWriter.WriteString(underlyingValue?.ToString() ?? default(decimal).ToString());
+        }
+        /// <inheritdoc/>
+        public void Serialize(BsonSerializationContext context, BsonSerializationArgs args, T value)
+        {
+            Serialize(context, args, (object)value);
+        }
+
+        object GetDeserializedValue(Type valueType, ref IBsonReader bsonReader)
+        {
+            var bsonType = bsonReader.CurrentBsonType;
+
+            if (bsonType == BsonType.Null)
+            {
+                bsonReader.ReadNull();
+                return null;
+            }
+            if (valueType == typeof(Guid))
+            {
+                var binaryData = bsonReader.ReadBinaryData();
+                return binaryData.ToGuid();
+            }
+            else if (valueType == typeof(double))
+                return bsonReader.ReadDouble();
+            else if (valueType == typeof(float))
+                return (float)bsonReader.ReadDouble();
+            else if (valueType == typeof(Int32))
+                return bsonReader.ReadInt32();
+            else if (valueType == typeof(Int64))
+                return bsonReader.ReadInt64();
+            else if (valueType == typeof(bool))
+                return bsonReader.ReadBoolean();
+            else if (valueType == typeof(string))
+                return bsonReader.ReadString();
+            else if (valueType == typeof(decimal))
+                return decimal.Parse(bsonReader.ReadString());
+
+            throw new FailedConceptSerialization($"Could not deserialize the concept value to '{valueType.FullName}'");
         }
     }
 }
