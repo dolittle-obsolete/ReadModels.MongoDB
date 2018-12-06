@@ -4,7 +4,7 @@
  * --------------------------------------------------------------------------------------------*/
 using System;
 using System.Collections.Generic;
-using Dolittle.Resources;
+using Dolittle.ResourceTypes;
 
 namespace Dolittle.ReadModels.MongoDB
 {
