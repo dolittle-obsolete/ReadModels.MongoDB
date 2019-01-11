@@ -12,22 +12,22 @@ using MongoDB.Driver;
 namespace Dolittle.ReadModels.MongoDB
 {
     /// <summary>
-    /// 
+    /// Represents an implementation of <see cref="IReadModelRepositoryFor{T}"/> for MongoDB
     /// </summary>
     public class ReadModelRepositoryFor<T> : IReadModelRepositoryFor<T> where T : Dolittle.ReadModels.IReadModel
     {
         readonly string _collectionName = typeof(T).Name;
-        readonly Connection _connection;
+        readonly Configuration _configuration;
         readonly IMongoCollection<T> _collection;
 
         /// <summary>
-        /// 
+        /// Initializes a new instance of <see cref="ReadModelRepositoryFor{T}"/>
         /// </summary>
-        /// <param name="connection"></param>
-        public ReadModelRepositoryFor(Connection connection)
+        /// <param name="configuration"><see cref="Configuration"/> to use</param>
+        public ReadModelRepositoryFor(Configuration configuration)
         {
-            _connection = connection;
-            _collection = connection.Database.GetCollection<T>(_collectionName);
+            _configuration = configuration;
+            _collection = configuration.Database.GetCollection<T>(_collectionName);
         }
 
         /// <inheritdoc/>

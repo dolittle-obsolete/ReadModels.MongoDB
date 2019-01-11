@@ -9,7 +9,7 @@ using Dolittle.ResourceTypes;
 namespace Dolittle.ReadModels.MongoDB
 {
     /// <inheritdoc/>
-    public class ReadModelRepositoryResourceTypeRepresentation : IRepresentAResourceType
+    public class ResourceTypeRepresentation : IRepresentAResourceType
     {
         static IDictionary<Type, Type> _bindings = new Dictionary<Type, Type>
         {
