@@ -16,8 +16,7 @@ namespace Dolittle.ReadModels.MongoDB
     {
         static IDictionary<Type, Type> _bindings = new Dictionary<Type, Type>
         {
-            {typeof(IReadModelRepositoryFor<>), typeof(ReadModelRepositoryFor<>)},
-            {typeof(IMongoDatabase), typeof(MongoDatabaseProxy)}
+            {typeof(IReadModelRepositoryFor<>), typeof(ReadModelRepositoryFor<>)}
         };
         
         /// <inheritdoc/>

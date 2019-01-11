@@ -4,6 +4,7 @@
  * --------------------------------------------------------------------------------------------*/
 using System.Threading;
 using System.Threading.Tasks;
+using Dolittle.ResourceTypes.Configuration;
 using MongoDB.Bson;
 using MongoDB.Driver;
 
@@ -23,12 +24,12 @@ namespace Dolittle.ReadModels.MongoDB
         readonly Configuration _configuration;
 
         /// <summary>
-        /// 
+        /// Initializes a new instance of <see cref="MongoDatabaseProxy"/>
         /// </summary>
-        /// <param name="configuration"></param>
-        public MongoDatabaseProxy(Configuration configuration)
+        /// <param name="configuration"><see cref="Configuration"/> to use</param>
+        public MongoDatabaseProxy(IConfigurationFor<Configuration> configuration)
         {
-            _configuration = configuration;
+            _configuration = configuration.Instance;
         }
 
         /// <inheritdoc/>
