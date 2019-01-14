@@ -48,9 +48,21 @@ namespace Dolittle.ReadModels.MongoDB
         }
 
         /// <inheritdoc/>
+        public void CreateCollection(IClientSessionHandle session, string name, CreateCollectionOptions options = null, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            _configuration.Database.CreateCollection(session,name, options, cancellationToken);
+        }
+
+        /// <inheritdoc/>
         public Task CreateCollectionAsync(string name, CreateCollectionOptions options = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             return _configuration.Database.CreateCollectionAsync(name, options, cancellationToken);
+        }
+
+        /// <inheritdoc/>
+        public Task CreateCollectionAsync(IClientSessionHandle session, string name, CreateCollectionOptions options = null, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return _configuration.Database.CreateCollectionAsync(session, name, options, cancellationToken);
         }
 
         /// <inheritdoc/>
@@ -60,9 +72,21 @@ namespace Dolittle.ReadModels.MongoDB
         }
 
         /// <inheritdoc/>
+        public void CreateView<TDocument, TResult>(IClientSessionHandle session, string viewName, string viewOn, PipelineDefinition<TDocument, TResult> pipeline, CreateViewOptions<TDocument> options = null, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            _configuration.Database.CreateView<TDocument, TResult>(session, viewName, viewOn, pipeline, options, cancellationToken);
+        }
+
+        /// <inheritdoc/>
         public Task CreateViewAsync<TDocument, TResult>(string viewName, string viewOn, PipelineDefinition<TDocument, TResult> pipeline, CreateViewOptions<TDocument> options = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             return _configuration.Database.CreateViewAsync<TDocument, TResult>(viewName, viewOn, pipeline, options, cancellationToken);
+        }
+
+        /// <inheritdoc/>
+        public Task CreateViewAsync<TDocument, TResult>(IClientSessionHandle session, string viewName, string viewOn, PipelineDefinition<TDocument, TResult> pipeline, CreateViewOptions<TDocument> options = null, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return _configuration.Database.CreateViewAsync<TDocument, TResult>(session,viewName, viewOn, pipeline, options, cancellationToken);
         }
 
         /// <inheritdoc/>
@@ -72,9 +96,21 @@ namespace Dolittle.ReadModels.MongoDB
         }
 
         /// <inheritdoc/>
+        public void DropCollection(IClientSessionHandle session, string name, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            _configuration.Database.DropCollection(session, name, cancellationToken);
+        }
+
+        /// <inheritdoc/>
         public Task DropCollectionAsync(string name, CancellationToken cancellationToken = default(CancellationToken))
         {
             return _configuration.Database.DropCollectionAsync(name, cancellationToken);
+        }
+
+        /// <inheritdoc/>
+        public Task DropCollectionAsync(IClientSessionHandle session, string name, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return _configuration.Database.DropCollectionAsync(session, name, cancellationToken);
         }
 
         /// <inheritdoc/>
@@ -84,9 +120,39 @@ namespace Dolittle.ReadModels.MongoDB
         }
 
         /// <inheritdoc/>
+        public IAsyncCursor<string> ListCollectionNames(ListCollectionNamesOptions options = null, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return _configuration.Database.ListCollectionNames(options, cancellationToken);
+        }
+
+        /// <inheritdoc/>
+        public IAsyncCursor<string> ListCollectionNames(IClientSessionHandle session, ListCollectionNamesOptions options = null, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return _configuration.Database.ListCollectionNames(session, options, cancellationToken);
+        }
+
+        /// <inheritdoc/>
+        public Task<IAsyncCursor<string>> ListCollectionNamesAsync(ListCollectionNamesOptions options = null, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return _configuration.Database.ListCollectionNamesAsync(options, cancellationToken);
+        }
+
+        /// <inheritdoc/>
+        public Task<IAsyncCursor<string>> ListCollectionNamesAsync(IClientSessionHandle session, ListCollectionNamesOptions options = null, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return _configuration.Database.ListCollectionNamesAsync(session, options, cancellationToken);
+        }
+
+        /// <inheritdoc/>
         public IAsyncCursor<BsonDocument> ListCollections(ListCollectionsOptions options = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             return _configuration.Database.ListCollections(options, cancellationToken);
+        }
+
+        /// <inheritdoc/>
+        public IAsyncCursor<BsonDocument> ListCollections(IClientSessionHandle session, ListCollectionsOptions options = null, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return _configuration.Database.ListCollections(session, options, cancellationToken);
         }
 
         /// <inheritdoc/>
@@ -96,9 +162,21 @@ namespace Dolittle.ReadModels.MongoDB
         }
 
         /// <inheritdoc/>
+        public Task<IAsyncCursor<BsonDocument>> ListCollectionsAsync(IClientSessionHandle session, ListCollectionsOptions options = null, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return _configuration.Database.ListCollectionsAsync(session, options, cancellationToken);
+        }
+
+        /// <inheritdoc/>
         public void RenameCollection(string oldName, string newName, RenameCollectionOptions options = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             _configuration.Database.RenameCollection(oldName, newName, options, cancellationToken);
+        }
+
+        /// <inheritdoc/>
+        public void RenameCollection(IClientSessionHandle session, string oldName, string newName, RenameCollectionOptions options = null, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            _configuration.Database.RenameCollection(session, oldName, newName, options, cancellationToken);
         }
 
         /// <inheritdoc/>
@@ -108,15 +186,57 @@ namespace Dolittle.ReadModels.MongoDB
         }
 
         /// <inheritdoc/>
+        public Task RenameCollectionAsync(IClientSessionHandle session, string oldName, string newName, RenameCollectionOptions options = null, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return _configuration.Database.RenameCollectionAsync(session, oldName, newName, options, cancellationToken);
+        }
+
+        /// <inheritdoc/>
         public TResult RunCommand<TResult>(Command<TResult> command, ReadPreference readPreference = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             return _configuration.Database.RunCommand<TResult>(command, readPreference, cancellationToken);
         }
 
         /// <inheritdoc/>
+        public TResult RunCommand<TResult>(IClientSessionHandle session, Command<TResult> command, ReadPreference readPreference = null, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return _configuration.Database.RunCommand(session, command, readPreference, cancellationToken);
+        }
+
+        /// <inheritdoc/>
         public Task<TResult> RunCommandAsync<TResult>(Command<TResult> command, ReadPreference readPreference = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             return _configuration.Database.RunCommandAsync(command, readPreference, cancellationToken);
+        }
+
+        /// <inheritdoc/>
+        public Task<TResult> RunCommandAsync<TResult>(IClientSessionHandle session, Command<TResult> command, ReadPreference readPreference = null, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return _configuration.Database.RunCommandAsync(session, command, readPreference, cancellationToken);
+        }
+
+        /// <inheritdoc/>
+        public IAsyncCursor<TResult> Watch<TResult>(PipelineDefinition<ChangeStreamDocument<BsonDocument>, TResult> pipeline, ChangeStreamOptions options = null, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return _configuration.Database.Watch(pipeline, options, cancellationToken);
+        }
+
+        /// <inheritdoc/>
+        public IAsyncCursor<TResult> Watch<TResult>(IClientSessionHandle session, PipelineDefinition<ChangeStreamDocument<BsonDocument>, TResult> pipeline, ChangeStreamOptions options = null, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return _configuration.Database.Watch(session, pipeline, options, cancellationToken);
+        }
+
+        /// <inheritdoc/>
+        public Task<IAsyncCursor<TResult>> WatchAsync<TResult>(PipelineDefinition<ChangeStreamDocument<BsonDocument>, TResult> pipeline, ChangeStreamOptions options = null, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return _configuration.Database.WatchAsync(pipeline, options, cancellationToken);
+        }
+
+        /// <inheritdoc/>
+        public Task<IAsyncCursor<TResult>> WatchAsync<TResult>(IClientSessionHandle session, PipelineDefinition<ChangeStreamDocument<BsonDocument>, TResult> pipeline, ChangeStreamOptions options = null, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return _configuration.Database.WatchAsync(session, pipeline, options, cancellationToken);
         }
 
         /// <inheritdoc/>

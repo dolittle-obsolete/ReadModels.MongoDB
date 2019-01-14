@@ -59,9 +59,21 @@ namespace Dolittle.ReadModels.MongoDB
         }
 
         /// <inheritdoc/>
+        public IAsyncCursor<TResult> Aggregate<TResult>(IClientSessionHandle session, PipelineDefinition<T, TResult> pipeline, AggregateOptions options = null, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return _actualCollection.Aggregate(session, pipeline, options, cancellationToken);
+        }
+
+        /// <inheritdoc/>
         public Task<IAsyncCursor<TResult>> AggregateAsync<TResult>(PipelineDefinition<T, TResult> pipeline, AggregateOptions options = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             return _actualCollection.AggregateAsync(pipeline, options, cancellationToken);
+        }
+
+        /// <inheritdoc/>
+        public Task<IAsyncCursor<TResult>> AggregateAsync<TResult>(IClientSessionHandle session, PipelineDefinition<T, TResult> pipeline, AggregateOptions options = null, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return _actualCollection.AggregateAsync(session, pipeline, options, cancellationToken);
         }
 
         /// <inheritdoc/>
@@ -71,21 +83,69 @@ namespace Dolittle.ReadModels.MongoDB
         }
 
         /// <inheritdoc/>
+        public BulkWriteResult<T> BulkWrite(IClientSessionHandle session, IEnumerable<WriteModel<T>> requests, BulkWriteOptions options = null, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return _actualCollection.BulkWrite(session, requests, options, cancellationToken);
+        }
+
+        /// <inheritdoc/>
         public Task<BulkWriteResult<T>> BulkWriteAsync(IEnumerable<WriteModel<T>> requests, BulkWriteOptions options = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             return _actualCollection.BulkWriteAsync(requests, options, cancellationToken);
         }
 
         /// <inheritdoc/>
+        public Task<BulkWriteResult<T>> BulkWriteAsync(IClientSessionHandle session, IEnumerable<WriteModel<T>> requests, BulkWriteOptions options = null, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return _actualCollection.BulkWriteAsync(session, requests, options, cancellationToken);
+        }
+
+        /// <inheritdoc/>
         public long Count(FilterDefinition<T> filter, CountOptions options = null, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return _actualCollection.Count(filter, options, cancellationToken);
+            return _actualCollection.CountDocuments(filter, options, cancellationToken);
+        }
+
+        /// <inheritdoc/>
+        public long Count(IClientSessionHandle session, FilterDefinition<T> filter, CountOptions options = null, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return _actualCollection.CountDocuments(session, filter, options, cancellationToken);
         }
 
         /// <inheritdoc/>
         public Task<long> CountAsync(FilterDefinition<T> filter, CountOptions options = null, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return _actualCollection.CountAsync(filter, options, cancellationToken);
+            return _actualCollection.CountDocumentsAsync(filter, options, cancellationToken);
+        }
+
+        /// <inheritdoc/>
+        public Task<long> CountAsync(IClientSessionHandle session, FilterDefinition<T> filter, CountOptions options = null, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return _actualCollection.CountDocumentsAsync(session, filter, options, cancellationToken);
+        }
+
+        /// <inheritdoc/>
+        public long CountDocuments(FilterDefinition<T> filter, CountOptions options = null, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return _actualCollection.CountDocuments(filter, options, cancellationToken);
+        }
+
+        /// <inheritdoc/>
+        public long CountDocuments(IClientSessionHandle session, FilterDefinition<T> filter, CountOptions options = null, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return _actualCollection.CountDocuments(session, filter, options, cancellationToken);
+        }
+
+        /// <inheritdoc/>
+        public Task<long> CountDocumentsAsync(FilterDefinition<T> filter, CountOptions options = null, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return _actualCollection.CountDocumentsAsync(filter, options, cancellationToken);
+        }
+
+        /// <inheritdoc/>
+        public Task<long> CountDocumentsAsync(IClientSessionHandle session, FilterDefinition<T> filter, CountOptions options = null, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return _actualCollection.CountDocumentsAsync(session, filter, options, cancellationToken);
         }
 
         /// <inheritdoc/>
@@ -101,6 +161,12 @@ namespace Dolittle.ReadModels.MongoDB
         }
 
         /// <inheritdoc/>
+        public DeleteResult DeleteMany(IClientSessionHandle session, FilterDefinition<T> filter, DeleteOptions options = null, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return _actualCollection.DeleteMany(session, filter, options, cancellationToken);
+        }
+
+        /// <inheritdoc/>
         public Task<DeleteResult> DeleteManyAsync(FilterDefinition<T> filter, CancellationToken cancellationToken = default(CancellationToken))
         {
             return _actualCollection.DeleteManyAsync(filter, cancellationToken);
@@ -110,6 +176,12 @@ namespace Dolittle.ReadModels.MongoDB
         public Task<DeleteResult> DeleteManyAsync(FilterDefinition<T> filter, DeleteOptions options, CancellationToken cancellationToken = default(CancellationToken))
         {
             return _actualCollection.DeleteManyAsync(filter, options, cancellationToken);
+        }
+
+        /// <inheritdoc/>
+        public Task<DeleteResult> DeleteManyAsync(IClientSessionHandle session, FilterDefinition<T> filter, DeleteOptions options = null, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return _actualCollection.DeleteManyAsync(session, filter, options, cancellationToken);
         }
 
         /// <inheritdoc/>
@@ -125,6 +197,12 @@ namespace Dolittle.ReadModels.MongoDB
         }
 
         /// <inheritdoc/>
+        public DeleteResult DeleteOne(IClientSessionHandle session, FilterDefinition<T> filter, DeleteOptions options = null, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return _actualCollection.DeleteOne(session, filter, options, cancellationToken);
+        }
+
+        /// <inheritdoc/>
         public Task<DeleteResult> DeleteOneAsync(FilterDefinition<T> filter, CancellationToken cancellationToken = default(CancellationToken))
         {
             return _actualCollection.DeleteOneAsync(filter, cancellationToken);
@@ -137,9 +215,21 @@ namespace Dolittle.ReadModels.MongoDB
         }
 
         /// <inheritdoc/>
+        public Task<DeleteResult> DeleteOneAsync(IClientSessionHandle session, FilterDefinition<T> filter, DeleteOptions options = null, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return _actualCollection.DeleteOneAsync(session, filter, options, cancellationToken);
+        }
+
+        /// <inheritdoc/>
         public IAsyncCursor<TField> Distinct<TField>(FieldDefinition<T, TField> field, FilterDefinition<T> filter, DistinctOptions options = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             return _actualCollection.Distinct(field, filter, options, cancellationToken);
+        }
+
+        /// <inheritdoc/>
+        public IAsyncCursor<TField> Distinct<TField>(IClientSessionHandle session, FieldDefinition<T, TField> field, FilterDefinition<T> filter, DistinctOptions options = null, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return _actualCollection.Distinct(session, field, filter, options, cancellationToken);
         }
 
         /// <inheritdoc/>
@@ -149,9 +239,34 @@ namespace Dolittle.ReadModels.MongoDB
         }
 
         /// <inheritdoc/>
+        public Task<IAsyncCursor<TField>> DistinctAsync<TField>(IClientSessionHandle session, FieldDefinition<T, TField> field, FilterDefinition<T> filter, DistinctOptions options = null, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return _actualCollection.DistinctAsync(session, field, filter, options, cancellationToken);
+        }
+
+
+        /// <inheritdoc/>
+        public long EstimatedDocumentCount(EstimatedDocumentCountOptions options = null, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return _actualCollection.EstimatedDocumentCount(options, cancellationToken);
+        }
+
+        /// <inheritdoc/>
+        public Task<long> EstimatedDocumentCountAsync(EstimatedDocumentCountOptions options = null, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return _actualCollection.EstimatedDocumentCountAsync(options, cancellationToken);
+        }
+
+        /// <inheritdoc/>
         public Task<IAsyncCursor<TProjection>> FindAsync<TProjection>(FilterDefinition<T> filter, FindOptions<T, TProjection> options = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             return _actualCollection.FindAsync(filter, options, cancellationToken);
+        }
+
+        /// <inheritdoc/>
+        public Task<IAsyncCursor<TProjection>> FindAsync<TProjection>(IClientSessionHandle session, FilterDefinition<T> filter, FindOptions<T, TProjection> options = null, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return _actualCollection.FindAsync(session, filter, options, cancellationToken);
         }
 
         /// <inheritdoc/>
@@ -161,9 +276,21 @@ namespace Dolittle.ReadModels.MongoDB
         }
 
         /// <inheritdoc/>
+        public TProjection FindOneAndDelete<TProjection>(IClientSessionHandle session, FilterDefinition<T> filter, FindOneAndDeleteOptions<T, TProjection> options = null, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return _actualCollection.FindOneAndDelete(session, filter, options, cancellationToken);
+        }
+
+        /// <inheritdoc/>
         public Task<TProjection> FindOneAndDeleteAsync<TProjection>(FilterDefinition<T> filter, FindOneAndDeleteOptions<T, TProjection> options = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             return _actualCollection.FindOneAndDeleteAsync(filter, options, cancellationToken);
+        }
+
+        /// <inheritdoc/>
+        public Task<TProjection> FindOneAndDeleteAsync<TProjection>(IClientSessionHandle session, FilterDefinition<T> filter, FindOneAndDeleteOptions<T, TProjection> options = null, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return _actualCollection.FindOneAndDeleteAsync(session, filter, options, cancellationToken);
         }
 
         /// <inheritdoc/>
@@ -173,9 +300,21 @@ namespace Dolittle.ReadModels.MongoDB
         }
 
         /// <inheritdoc/>
+        public TProjection FindOneAndReplace<TProjection>(IClientSessionHandle session, FilterDefinition<T> filter, T replacement, FindOneAndReplaceOptions<T, TProjection> options = null, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return _actualCollection.FindOneAndReplace(session, filter, replacement, options, cancellationToken);
+        }
+
+        /// <inheritdoc/>
         public Task<TProjection> FindOneAndReplaceAsync<TProjection>(FilterDefinition<T> filter, T replacement, FindOneAndReplaceOptions<T, TProjection> options = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             return _actualCollection.FindOneAndReplaceAsync(filter, replacement, options, cancellationToken);
+        }
+
+        /// <inheritdoc/>
+        public Task<TProjection> FindOneAndReplaceAsync<TProjection>(IClientSessionHandle session, FilterDefinition<T> filter, T replacement, FindOneAndReplaceOptions<T, TProjection> options = null, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return _actualCollection.FindOneAndReplaceAsync(session, filter, replacement, options, cancellationToken);
         }
 
         /// <inheritdoc/>
@@ -185,13 +324,31 @@ namespace Dolittle.ReadModels.MongoDB
         }
 
         /// <inheritdoc/>
+        public TProjection FindOneAndUpdate<TProjection>(IClientSessionHandle session, FilterDefinition<T> filter, UpdateDefinition<T> update, FindOneAndUpdateOptions<T, TProjection> options = null, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return _actualCollection.FindOneAndUpdate(session, filter, update, options, cancellationToken);
+        }
+
+        /// <inheritdoc/>
         public Task<TProjection> FindOneAndUpdateAsync<TProjection>(FilterDefinition<T> filter, UpdateDefinition<T> update, FindOneAndUpdateOptions<T, TProjection> options = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             return _actualCollection.FindOneAndUpdateAsync(filter, update, options, cancellationToken);
         }
 
         /// <inheritdoc/>
+        public Task<TProjection> FindOneAndUpdateAsync<TProjection>(IClientSessionHandle session, FilterDefinition<T> filter, UpdateDefinition<T> update, FindOneAndUpdateOptions<T, TProjection> options = null, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return _actualCollection.FindOneAndUpdateAsync(session, filter, update, options, cancellationToken);
+        }
+
+        /// <inheritdoc/>
         public IAsyncCursor<TProjection> FindSync<TProjection>(FilterDefinition<T> filter, FindOptions<T, TProjection> options = null, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return _actualCollection.FindSync(filter, options, cancellationToken);
+        }
+
+        /// <inheritdoc/>
+        public IAsyncCursor<TProjection> FindSync<TProjection>(IClientSessionHandle session, FilterDefinition<T> filter, FindOptions<T, TProjection> options = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             return _actualCollection.FindSync(filter, options, cancellationToken);
         }
@@ -203,15 +360,33 @@ namespace Dolittle.ReadModels.MongoDB
         }
 
         /// <inheritdoc/>
+        public void InsertMany(IClientSessionHandle session, IEnumerable<T> documents, InsertManyOptions options = null, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            _actualCollection.InsertMany(session, documents, options, cancellationToken);
+        }
+
+        /// <inheritdoc/>
         public Task InsertManyAsync(IEnumerable<T> documents, InsertManyOptions options = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             return _actualCollection.InsertManyAsync(documents, options, cancellationToken);
         }
 
         /// <inheritdoc/>
+        public Task InsertManyAsync(IClientSessionHandle session, IEnumerable<T> documents, InsertManyOptions options = null, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return _actualCollection.InsertManyAsync(session, documents, options, cancellationToken);
+        }
+
+        /// <inheritdoc/>
         public void InsertOne(T document, InsertOneOptions options = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             _actualCollection.InsertOne(document, options, cancellationToken);
+        }
+
+        /// <inheritdoc/>
+        public void InsertOne(IClientSessionHandle session, T document, InsertOneOptions options = null, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            _actualCollection.InsertOne(session, document, options, cancellationToken);
         }
 
         /// <inheritdoc/>
@@ -227,15 +402,33 @@ namespace Dolittle.ReadModels.MongoDB
         }
 
         /// <inheritdoc/>
+        public Task InsertOneAsync(IClientSessionHandle session, T document, InsertOneOptions options = null, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return _actualCollection.InsertOneAsync(session, document, options, cancellationToken);
+        }
+
+        /// <inheritdoc/>
         public IAsyncCursor<TResult> MapReduce<TResult>(BsonJavaScript map, BsonJavaScript reduce, MapReduceOptions<T, TResult> options = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             return _actualCollection.MapReduce(map, reduce, options, cancellationToken);
         }
 
         /// <inheritdoc/>
+        public IAsyncCursor<TResult> MapReduce<TResult>(IClientSessionHandle session, BsonJavaScript map, BsonJavaScript reduce, MapReduceOptions<T, TResult> options = null, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return _actualCollection.MapReduce(session, map, reduce, options, cancellationToken);
+        }
+
+        /// <inheritdoc/>
         public Task<IAsyncCursor<TResult>> MapReduceAsync<TResult>(BsonJavaScript map, BsonJavaScript reduce, MapReduceOptions<T, TResult> options = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             return _actualCollection.MapReduceAsync(map, reduce, options, cancellationToken);
+        }
+
+        /// <inheritdoc/>
+        public Task<IAsyncCursor<TResult>> MapReduceAsync<TResult>(IClientSessionHandle session, BsonJavaScript map, BsonJavaScript reduce, MapReduceOptions<T, TResult> options = null, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return _actualCollection.MapReduceAsync(session, map, reduce, options, cancellationToken);
         }
 
         /// <inheritdoc/>
@@ -251,9 +444,21 @@ namespace Dolittle.ReadModels.MongoDB
         }
 
         /// <inheritdoc/>
+        public ReplaceOneResult ReplaceOne(IClientSessionHandle session, FilterDefinition<T> filter, T replacement, UpdateOptions options = null, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return _actualCollection.ReplaceOne(session, filter, replacement, options, cancellationToken);
+        }
+
+        /// <inheritdoc/>
         public Task<ReplaceOneResult> ReplaceOneAsync(FilterDefinition<T> filter, T replacement, UpdateOptions options = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             return _actualCollection.ReplaceOneAsync(filter, replacement, options, cancellationToken);
+        }
+
+        /// <inheritdoc/>
+        public Task<ReplaceOneResult> ReplaceOneAsync(IClientSessionHandle session, FilterDefinition<T> filter, T replacement, UpdateOptions options = null, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return _actualCollection.ReplaceOneAsync(session, filter, replacement, options, cancellationToken);
         }
 
         /// <inheritdoc/>
@@ -263,9 +468,21 @@ namespace Dolittle.ReadModels.MongoDB
         }
 
         /// <inheritdoc/>
+        public UpdateResult UpdateMany(IClientSessionHandle session, FilterDefinition<T> filter, UpdateDefinition<T> update, UpdateOptions options = null, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return _actualCollection.UpdateMany(session, filter, update, options, cancellationToken);
+        }
+
+        /// <inheritdoc/>
         public Task<UpdateResult> UpdateManyAsync(FilterDefinition<T> filter, UpdateDefinition<T> update, UpdateOptions options = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             return _actualCollection.UpdateManyAsync(filter, update, options, cancellationToken);
+        }
+
+        /// <inheritdoc/>
+        public Task<UpdateResult> UpdateManyAsync(IClientSessionHandle session, FilterDefinition<T> filter, UpdateDefinition<T> update, UpdateOptions options = null, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return _actualCollection.UpdateManyAsync(session, filter, update, options, cancellationToken);
         }
 
         /// <inheritdoc/>
@@ -275,9 +492,45 @@ namespace Dolittle.ReadModels.MongoDB
         }
 
         /// <inheritdoc/>
+        public UpdateResult UpdateOne(IClientSessionHandle session, FilterDefinition<T> filter, UpdateDefinition<T> update, UpdateOptions options = null, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return _actualCollection.UpdateOne(session, filter, update, options, cancellationToken);
+        }
+
+        /// <inheritdoc/>
         public Task<UpdateResult> UpdateOneAsync(FilterDefinition<T> filter, UpdateDefinition<T> update, UpdateOptions options = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             return _actualCollection.UpdateOneAsync(filter, update, options, cancellationToken);
+        }
+
+        /// <inheritdoc/>
+        public Task<UpdateResult> UpdateOneAsync(IClientSessionHandle session, FilterDefinition<T> filter, UpdateDefinition<T> update, UpdateOptions options = null, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return _actualCollection.UpdateOneAsync(session, filter, update, options, cancellationToken);
+        }
+
+        /// <inheritdoc/>
+        public IAsyncCursor<TResult> Watch<TResult>(PipelineDefinition<ChangeStreamDocument<T>, TResult> pipeline, ChangeStreamOptions options = null, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return _actualCollection.Watch(pipeline, options, cancellationToken);
+        }
+
+        /// <inheritdoc/>
+        public IAsyncCursor<TResult> Watch<TResult>(IClientSessionHandle session, PipelineDefinition<ChangeStreamDocument<T>, TResult> pipeline, ChangeStreamOptions options = null, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return _actualCollection.Watch(session, pipeline, options, cancellationToken);
+        }
+
+        /// <inheritdoc/>
+        public Task<IAsyncCursor<TResult>> WatchAsync<TResult>(PipelineDefinition<ChangeStreamDocument<T>, TResult> pipeline, ChangeStreamOptions options = null, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return _actualCollection.WatchAsync(pipeline, options, cancellationToken);
+        }
+
+        /// <inheritdoc/>
+        public Task<IAsyncCursor<TResult>> WatchAsync<TResult>(IClientSessionHandle session, PipelineDefinition<ChangeStreamDocument<T>, TResult> pipeline, ChangeStreamOptions options = null, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return _actualCollection.WatchAsync(session, pipeline, options, cancellationToken);
         }
 
         /// <inheritdoc/>
