@@ -9,15 +9,15 @@ using MongoDB.Driver;
 namespace Dolittle.ReadModels.MongoDB
 {
     /// <summary>
-    /// 
+    /// Represents the configuration for MongoDB
     /// </summary>
-    public class Connection
+    public class Configuration
     {
         /// <summary>
-        /// 
+        /// Initializes a new instance of <see cref="Configuration"/> 
         /// </summary>
         /// <param name="configurationWrapper"></param>
-        public Connection(IConfigurationFor<ReadModelRepositoryConfiguration> configurationWrapper)
+        public Configuration(IConfigurationFor<ReadModelRepositoryConfiguration> configurationWrapper)
         {
             var config = configurationWrapper.Instance;
             if (string.IsNullOrEmpty(config.ConnectionString))
@@ -32,25 +32,23 @@ namespace Dolittle.ReadModels.MongoDB
                         CheckCertificateRevocation = false
                     };
                 }
-                Server = new MongoClient(s);
+                Client = new MongoClient(s);
             }
             else
-                Server = new MongoClient(config.ConnectionString);
-            Database = Server.GetDatabase(config.Database);
+                Client = new MongoClient(config.ConnectionString);
+            Database = Client.GetDatabase(config.Database);
 
             BsonSerializer.RegisterSerializationProvider(new ConceptSerializationProvider());
         }
 
         /// <summary>
-        /// 
+        /// Get the <see cref="IMongoClient"/>
         /// </summary>
-        /// <returns></returns>
-        public MongoClient Server { get; }
+        public IMongoClient Client { get; }
 
         /// <summary>
-        /// 
+        /// Get the current <see cref="IMongoDatabase"/>
         /// </summary>
-        /// <returns></returns>
         public IMongoDatabase Database { get; }
     }
 }
