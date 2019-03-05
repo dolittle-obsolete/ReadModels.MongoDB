@@ -16,7 +16,7 @@ namespace Dolittle.ReadModels.MongoDB
     /// </summary>
     public class ReadModelRepositoryFor<T> : IReadModelRepositoryFor<T> where T : Dolittle.ReadModels.IReadModel
     {
-        readonly string _collectionName = ReplaceReadNamespace(typeof(T).FullName);
+        readonly string _collectionName = RemoveReadNamespace(typeof(T).FullName);
         readonly Configuration _configuration;
         readonly IMongoCollection<T> _collection;
 
