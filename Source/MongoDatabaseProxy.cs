@@ -27,9 +27,9 @@ namespace Dolittle.ReadModels.MongoDB
         /// Initializes a new instance of <see cref="MongoDatabaseProxy"/>
         /// </summary>
         /// <param name="configuration"><see cref="Configuration"/> to use</param>
-        public MongoDatabaseProxy(IConfigurationFor<Configuration> configuration)
+        public MongoDatabaseProxy(Configuration configuration)
         {
-            _configuration = configuration.Instance;
+            _configuration = configuration;
         }
 
         /// <inheritdoc/>
