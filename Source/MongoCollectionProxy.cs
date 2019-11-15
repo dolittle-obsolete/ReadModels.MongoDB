@@ -31,10 +31,10 @@ namespace Dolittle.ReadModels.MongoDB
         /// Initializes a new instance of <see cref="MongoCollectionProxy{T}"/>
         /// </summary>
         /// <param name="configuration"><see cref="Configuration"/> to use</param>
-        public MongoCollectionProxy(IConfigurationFor<Configuration> configuration)
+        public MongoCollectionProxy(Configuration configuration)
         {
-            _configuration = configuration.Instance;
-            _actualCollection = _configuration.Database.GetCollection<T>(typeof(T).Name);
+            _configuration = configuration;
+            _actualCollection = _configuration.Database.GetCollection<T>(typeof(T).FullName);
         }
 
         /// <inheritdoc/>
