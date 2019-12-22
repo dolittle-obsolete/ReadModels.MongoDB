@@ -1,29 +1,27 @@
-﻿/*---------------------------------------------------------------------------------------------
- *  Copyright (c) Dolittle. All rights reserved.
- *  Licensed under the MIT License. See LICENSE in the project root for license information.
- * --------------------------------------------------------------------------------------------*/
+﻿// Copyright (c) Dolittle. All rights reserved.
+// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+
+using System;
 using System.Linq;
-using System.Reflection;
-using Dolittle.Concepts;
-using Dolittle.ReadModels;
-using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace Dolittle.ReadModels.MongoDB
 {
     /// <summary>
-    /// Represents an implementation of <see cref="IReadModelRepositoryFor{T}"/> for MongoDB
+    /// Represents an implementation of <see cref="IReadModelRepositoryFor{T}"/> for MongoDB.
     /// </summary>
-    public class ReadModelRepositoryFor<T> : IReadModelRepositoryFor<T> where T : Dolittle.ReadModels.IReadModel
+    /// <typeparam name="T">Type of <see cref="IReadModel"/>.</typeparam>
+    public class ReadModelRepositoryFor<T> : IReadModelRepositoryFor<T>
+        where T : IReadModel
     {
         readonly string _collectionName = RemoveReadNamespace(typeof(T).FullName);
         readonly Configuration _configuration;
         readonly IMongoCollection<T> _collection;
 
         /// <summary>
-        /// Initializes a new instance of <see cref="ReadModelRepositoryFor{T}"/>
+        /// Initializes a new instance of the <see cref="ReadModelRepositoryFor{T}"/> class.
         /// </summary>
-        /// <param name="configuration"><see cref="Configuration"/> to use</param>
+        /// <param name="configuration"><see cref="Configuration"/> to use.</param>
         public ReadModelRepositoryFor(Configuration configuration)
         {
             _configuration = configuration;
@@ -62,9 +60,11 @@ namespace Dolittle.ReadModels.MongoDB
             _collection.ReplaceOne(filter, readModel, new UpdateOptions() { IsUpsert = true });
         }
 
-	    static string RemoveReadNamespace(string source)
-        {	
-            return source.StartsWith("Read.") ? source.Substring(5) : source;
+        static string RemoveReadNamespace(string source)
+        {
+            return source.StartsWith("Read.", StringComparison.InvariantCulture)
+                ? source.Substring(5)
+                : source;
         }
-   }
+    }
 }

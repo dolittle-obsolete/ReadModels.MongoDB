@@ -1,9 +1,8 @@
-/*---------------------------------------------------------------------------------------------
- *  Copyright (c) Dolittle. All rights reserved.
- *  Licensed under the MIT License. See LICENSE in the project root for license information.
- * --------------------------------------------------------------------------------------------*/
- 
+// Copyright (c) Dolittle. All rights reserved.
+// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+
 using System;
+using System.Globalization;
 using System.Reflection;
 using Dolittle.Concepts;
 using MongoDB.Bson;
@@ -12,21 +11,25 @@ using MongoDB.Bson.Serialization;
 
 namespace Dolittle.ReadModels.MongoDB
 {
-    /// <inheritdoc/>
+    /// <summary>
+    /// Represents a <see cref="IBsonSerializer{T}"/> for <see cref="ConceptAs{T}"/> types.
+    /// </summary>
+    /// <typeparam name="T">Type of concept.</typeparam>
     public class ConceptSerializer<T> : IBsonSerializer<T>
     {
-        /// <inheritdoc/>
-        public Type ValueType { get; }
-        /// <inheritdoc/>
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ConceptSerializer{T}"/> class.
+        /// </summary>
         public ConceptSerializer()
         {
             ValueType = typeof(T);
 
             if (!ValueType.IsConcept())
                 throw new Exception("Not a concept");
-
         }
+
+        /// <inheritdoc/>
+        public Type ValueType { get; }
 
         /// <inheritdoc/>
         public T Deserialize(BsonDeserializationContext context, BsonDeserializationArgs args)
@@ -34,13 +37,14 @@ namespace Dolittle.ReadModels.MongoDB
             var bsonReader = context.Reader;
 
             var actualType = args.NominalType;
-
-            object value = null;
-
             BsonType bsonType = bsonReader.GetCurrentBsonType();
 
             var valueType = actualType.GetConceptValueType();
-            if (bsonType == BsonType.Document) // It should be a Concept object
+
+            object value;
+
+            // It should be a Concept object
+            if (bsonType == BsonType.Document)
             {
                 bsonReader.ReadStartDocument();
                 var keyName = bsonReader.ReadName(Utf8NameDecoder.Instance);
@@ -49,19 +53,19 @@ namespace Dolittle.ReadModels.MongoDB
                     value = GetDeserializedValue(valueType, ref bsonReader);
                     bsonReader.ReadEndDocument();
                 }
-                else throw new FailedConceptSerialization("Expected a concept object, but no key named 'Value' or 'value' was found on the object");
+                else
+                {
+                    throw new FailedConceptSerialization("Expected a concept object, but no key named 'Value' or 'value' was found on the object");
+                }
             }
             else
+            {
                 value = GetDeserializedValue(valueType, ref bsonReader);
+            }
 
-            dynamic concept = ConceptFactory.CreateConceptInstance(ValueType, value);
-
-            return concept;
+            return (dynamic)ConceptFactory.CreateConceptInstance(ValueType, value);
         }
 
-        object IBsonSerializer.Deserialize(BsonDeserializationContext context, BsonDeserializationArgs args) => this.Deserialize(context, args); 
-        
-        
         /// <inheritdoc/>
         public void Serialize(BsonSerializationContext context, BsonSerializationArgs args, object value)
         {
@@ -78,25 +82,43 @@ namespace Dolittle.ReadModels.MongoDB
                 bsonWriter.WriteBinaryData(new BsonBinaryData(guidAsBytes, BsonBinarySubType.UuidLegacy, GuidRepresentation.CSharpLegacy));
             }
             else if (underlyingValueType == typeof(double))
+            {
                 bsonWriter.WriteDouble((double)(underlyingValue ?? default(double)));
+            }
             else if (underlyingValueType == typeof(float))
+            {
                 bsonWriter.WriteDouble((double)(underlyingValue ?? default(double)));
-            else if (underlyingValueType == typeof(Int32))
-                bsonWriter.WriteInt32((Int32)(underlyingValue ?? default(Int32)));
-            else if (underlyingValueType == typeof(Int64))
-                bsonWriter.WriteInt64((Int64)(underlyingValue ?? default(Int64)));
+            }
+            else if (underlyingValueType == typeof(int))
+            {
+                bsonWriter.WriteInt32((int)(underlyingValue ?? default(int)));
+            }
+            else if (underlyingValueType == typeof(long))
+            {
+                bsonWriter.WriteInt64((long)(underlyingValue ?? default(long)));
+            }
             else if (underlyingValueType == typeof(bool))
+            {
                 bsonWriter.WriteBoolean((bool)(underlyingValue ?? default(bool)));
+            }
             else if (underlyingValueType == typeof(string))
+            {
                 bsonWriter.WriteString((string)(underlyingValue ?? string.Empty));
+            }
             else if (underlyingValueType == typeof(decimal))
-                bsonWriter.WriteString(underlyingValue?.ToString() ?? default(decimal).ToString());
+            {
+                bsonWriter.WriteString(underlyingValue?.ToString() ?? default(decimal).ToString(CultureInfo.InvariantCulture));
+            }
         }
+
         /// <inheritdoc/>
         public void Serialize(BsonSerializationContext context, BsonSerializationArgs args, T value)
         {
             Serialize(context, args, (object)value);
         }
+
+        /// <inheritdoc/>
+        object IBsonSerializer.Deserialize(BsonDeserializationContext context, BsonDeserializationArgs args) => Deserialize(context, args);
 
         object GetDeserializedValue(Type valueType, ref IBsonReader bsonReader)
         {
@@ -107,25 +129,40 @@ namespace Dolittle.ReadModels.MongoDB
                 bsonReader.ReadNull();
                 return null;
             }
+
             if (valueType == typeof(Guid))
             {
                 var binaryData = bsonReader.ReadBinaryData();
                 return binaryData.ToGuid();
             }
             else if (valueType == typeof(double))
+            {
                 return bsonReader.ReadDouble();
+            }
             else if (valueType == typeof(float))
+            {
                 return (float)bsonReader.ReadDouble();
-            else if (valueType == typeof(Int32))
+            }
+            else if (valueType == typeof(int))
+            {
                 return bsonReader.ReadInt32();
-            else if (valueType == typeof(Int64))
+            }
+            else if (valueType == typeof(long))
+            {
                 return bsonReader.ReadInt64();
+            }
             else if (valueType == typeof(bool))
+            {
                 return bsonReader.ReadBoolean();
+            }
             else if (valueType == typeof(string))
+            {
                 return bsonReader.ReadString();
+            }
             else if (valueType == typeof(decimal))
-                return decimal.Parse(bsonReader.ReadString());
+            {
+                return decimal.Parse(bsonReader.ReadString(), CultureInfo.InvariantCulture);
+            }
 
             throw new FailedConceptSerialization($"Could not deserialize the concept value to '{valueType.FullName}'");
         }

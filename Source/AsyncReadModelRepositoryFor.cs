@@ -1,27 +1,27 @@
-﻿/*---------------------------------------------------------------------------------------------
- *  Copyright (c) Dolittle. All rights reserved.
- *  Licensed under the MIT License. See LICENSE in the project root for license information.
- * --------------------------------------------------------------------------------------------*/
+﻿// Copyright (c) Dolittle. All rights reserved.
+// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+
 using System.Linq;
 using System.Threading.Tasks;
-using Dolittle.ReadModels;
 using MongoDB.Driver;
 
 namespace Dolittle.ReadModels.MongoDB
 {
     /// <summary>
-    /// Represents an implementation of <see cref="IReadModelRepositoryFor{T}"/> for MongoDB
+    /// Represents an implementation of <see cref="IReadModelRepositoryFor{T}"/> for MongoDB.
     /// </summary>
-    public class AsyncReadModelRepositoryFor<T> : IAsyncReadModelRepositoryFor<T> where T : Dolittle.ReadModels.IReadModel
+    /// <typeparam name="T">Type of <see cref="IReadModel"/>.</typeparam>
+    public class AsyncReadModelRepositoryFor<T> : IAsyncReadModelRepositoryFor<T>
+        where T : IReadModel
     {
         readonly string _collectionName = typeof(T).Name;
         readonly Configuration _configuration;
         readonly IMongoCollection<T> _collection;
 
         /// <summary>
-        /// Initializes a new instance of <see cref="ReadModelRepositoryFor{T}"/>
+        /// Initializes a new instance of the <see cref="AsyncReadModelRepositoryFor{T}"/> class.
         /// </summary>
-        /// <param name="configuration"><see cref="Configuration"/> to use</param>
+        /// <param name="configuration"><see cref="Configuration"/> to use.</param>
         public AsyncReadModelRepositoryFor(Configuration configuration)
         {
             _configuration = configuration;
@@ -35,21 +35,21 @@ namespace Dolittle.ReadModels.MongoDB
         public async Task Delete(T readModel)
         {
             var objectId = readModel.GetObjectIdFrom();
-            await _collection.DeleteOneAsync(Builders<T>.Filter.Eq("_id", objectId));
+            await _collection.DeleteOneAsync(Builders<T>.Filter.Eq("_id", objectId)).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>
         public async Task<T> GetById(object id)
         {
             var objectId = id.GetIdAsBsonValue();
-            var result = await _collection.FindAsync(Builders<T>.Filter.Eq("_id", objectId));
+            var result = await _collection.FindAsync(Builders<T>.Filter.Eq("_id", objectId)).ConfigureAwait(false);
             return result.FirstOrDefault();
         }
 
         /// <inheritdoc/>
         public async Task Insert(T readModel)
         {
-            await _collection.InsertOneAsync(readModel);
+            await _collection.InsertOneAsync(readModel).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>
@@ -58,7 +58,7 @@ namespace Dolittle.ReadModels.MongoDB
             var id = readModel.GetObjectIdFrom();
 
             var filter = Builders<T>.Filter.Eq("_id", id);
-            await _collection.ReplaceOneAsync(filter, readModel, new UpdateOptions() { IsUpsert = true });
+            await _collection.ReplaceOneAsync(filter, readModel, new UpdateOptions() { IsUpsert = true }).ConfigureAwait(false);
         }
     }
 }
