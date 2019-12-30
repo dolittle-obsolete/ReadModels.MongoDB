@@ -25,7 +25,7 @@ namespace Dolittle.ReadModels.MongoDB
             ValueType = typeof(T);
 
             if (!ValueType.IsConcept())
-                throw new Exception("Not a concept");
+                throw new TypeIsNotAConcept(ValueType);
         }
 
         /// <inheritdoc/>
