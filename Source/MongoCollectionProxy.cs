@@ -448,6 +448,18 @@ namespace Dolittle.ReadModels.MongoDB
         }
 
         /// <inheritdoc/>
+        public ReplaceOneResult ReplaceOne(FilterDefinition<T> filter, T replacement, ReplaceOptions options = null, CancellationToken cancellationToken = default)
+        {
+            return _actualCollection.ReplaceOne(filter, replacement, options, cancellationToken);
+        }
+
+        /// <inheritdoc/>
+        public ReplaceOneResult ReplaceOne(IClientSessionHandle session, FilterDefinition<T> filter, T replacement, ReplaceOptions options = null, CancellationToken cancellationToken = default)
+        {
+            return _actualCollection.ReplaceOne(session, filter, replacement, options, cancellationToken);
+        }
+
+        /// <inheritdoc/>
         public Task<ReplaceOneResult> ReplaceOneAsync(FilterDefinition<T> filter, T replacement, UpdateOptions options = null, CancellationToken cancellationToken = default)
         {
             return _actualCollection.ReplaceOneAsync(filter, replacement, options, cancellationToken);
@@ -455,6 +467,18 @@ namespace Dolittle.ReadModels.MongoDB
 
         /// <inheritdoc/>
         public Task<ReplaceOneResult> ReplaceOneAsync(IClientSessionHandle session, FilterDefinition<T> filter, T replacement, UpdateOptions options = null, CancellationToken cancellationToken = default)
+        {
+            return _actualCollection.ReplaceOneAsync(session, filter, replacement, options, cancellationToken);
+        }
+
+        /// <inheritdoc/>
+        public Task<ReplaceOneResult> ReplaceOneAsync(FilterDefinition<T> filter, T replacement, ReplaceOptions options = null, CancellationToken cancellationToken = default)
+        {
+            return _actualCollection.ReplaceOneAsync(filter, replacement, options, cancellationToken);
+        }
+
+        /// <inheritdoc/>
+        public Task<ReplaceOneResult> ReplaceOneAsync(IClientSessionHandle session, FilterDefinition<T> filter, T replacement, ReplaceOptions options = null, CancellationToken cancellationToken = default)
         {
             return _actualCollection.ReplaceOneAsync(session, filter, replacement, options, cancellationToken);
         }
@@ -520,13 +544,13 @@ namespace Dolittle.ReadModels.MongoDB
         }
 
         /// <inheritdoc/>
-        public Task<IAsyncCursor<TResult>> WatchAsync<TResult>(PipelineDefinition<ChangeStreamDocument<T>, TResult> pipeline, ChangeStreamOptions options = null, CancellationToken cancellationToken = default)
+        public Task<IChangeStreamCursor<TResult>> WatchAsync<TResult>(PipelineDefinition<ChangeStreamDocument<T>, TResult> pipeline, ChangeStreamOptions options = null, CancellationToken cancellationToken = default)
         {
             return _actualCollection.WatchAsync(pipeline, options, cancellationToken);
         }
 
         /// <inheritdoc/>
-        public Task<IAsyncCursor<TResult>> WatchAsync<TResult>(IClientSessionHandle session, PipelineDefinition<ChangeStreamDocument<T>, TResult> pipeline, ChangeStreamOptions options = null, CancellationToken cancellationToken = default)
+        public Task<IChangeStreamCursor<TResult>> WatchAsync<TResult>(IClientSessionHandle session, PipelineDefinition<ChangeStreamDocument<T>, TResult> pipeline, ChangeStreamOptions options = null, CancellationToken cancellationToken = default)
         {
             return _actualCollection.WatchAsync(session, pipeline, options, cancellationToken);
         }
@@ -547,6 +571,30 @@ namespace Dolittle.ReadModels.MongoDB
         public IMongoCollection<T> WithWriteConcern(WriteConcern writeConcern)
         {
             return _actualCollection.WithWriteConcern(writeConcern);
+        }
+
+        /// <inheritdoc/>
+        IChangeStreamCursor<TResult> IMongoCollection<T>.Watch<TResult>(PipelineDefinition<ChangeStreamDocument<T>, TResult> pipeline, ChangeStreamOptions options, CancellationToken cancellationToken)
+        {
+            return _actualCollection.Watch<TResult>(pipeline, options, cancellationToken);
+        }
+
+        /// <inheritdoc/>
+        IChangeStreamCursor<TResult> IMongoCollection<T>.Watch<TResult>(IClientSessionHandle session, PipelineDefinition<ChangeStreamDocument<T>, TResult> pipeline, ChangeStreamOptions options, CancellationToken cancellationToken)
+        {
+            return _actualCollection.Watch<TResult>(session, pipeline, options, cancellationToken);
+        }
+
+        /// <inheritdoc/>
+        Task<IChangeStreamCursor<TResult>> IMongoCollection<T>.WatchAsync<TResult>(PipelineDefinition<ChangeStreamDocument<T>, TResult> pipeline, ChangeStreamOptions options, CancellationToken cancellationToken)
+        {
+            return _actualCollection.WatchAsync<TResult>(pipeline, options, cancellationToken);
+        }
+
+        /// <inheritdoc/>
+        Task<IChangeStreamCursor<TResult>> IMongoCollection<T>.WatchAsync<TResult>(IClientSessionHandle session, PipelineDefinition<ChangeStreamDocument<T>, TResult> pipeline, ChangeStreamOptions options, CancellationToken cancellationToken)
+        {
+            return _actualCollection.WatchAsync<TResult>(session, pipeline, options, cancellationToken);
         }
     }
 }
