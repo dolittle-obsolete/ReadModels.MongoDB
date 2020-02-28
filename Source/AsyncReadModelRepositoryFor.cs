@@ -58,7 +58,10 @@ namespace Dolittle.ReadModels.MongoDB
             var id = readModel.GetObjectIdFrom();
 
             var filter = Builders<T>.Filter.Eq("_id", id);
-            await _collection.ReplaceOneAsync(filter, readModel, new UpdateOptions() { IsUpsert = true }).ConfigureAwait(false);
+            await _collection.ReplaceOneAsync(
+                filter,
+                readModel,
+                new ReplaceOptions { IsUpsert = true }).ConfigureAwait(false);
         }
     }
 }

@@ -24,7 +24,7 @@ namespace Dolittle.ReadModels.MongoDB
                 var s = MongoClientSettings.FromUrl(new MongoUrl(config.Host));
                 if (config.UseSSL)
                 {
-                    s.UseSsl = true;
+                    s.UseTls = true;
                     s.SslSettings = new SslSettings
                     {
                         EnabledSslProtocols = System.Security.Authentication.SslProtocols.Tls12,
