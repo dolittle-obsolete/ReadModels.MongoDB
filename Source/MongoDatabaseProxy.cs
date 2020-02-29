@@ -238,30 +238,6 @@ namespace Dolittle.ReadModels.MongoDB
         }
 
         /// <inheritdoc/>
-        public IAsyncCursor<TResult> Watch<TResult>(PipelineDefinition<ChangeStreamDocument<BsonDocument>, TResult> pipeline, ChangeStreamOptions options = null, CancellationToken cancellationToken = default)
-        {
-            return _configuration.Database.Watch(pipeline, options, cancellationToken);
-        }
-
-        /// <inheritdoc/>
-        public IAsyncCursor<TResult> Watch<TResult>(IClientSessionHandle session, PipelineDefinition<ChangeStreamDocument<BsonDocument>, TResult> pipeline, ChangeStreamOptions options = null, CancellationToken cancellationToken = default)
-        {
-            return _configuration.Database.Watch(session, pipeline, options, cancellationToken);
-        }
-
-        /// <inheritdoc/>
-        public Task<IChangeStreamCursor<TResult>> WatchAsync<TResult>(PipelineDefinition<ChangeStreamDocument<BsonDocument>, TResult> pipeline, ChangeStreamOptions options = null, CancellationToken cancellationToken = default)
-        {
-            return _configuration.Database.WatchAsync(pipeline, options, cancellationToken);
-        }
-
-        /// <inheritdoc/>
-        public Task<IChangeStreamCursor<TResult>> WatchAsync<TResult>(IClientSessionHandle session, PipelineDefinition<ChangeStreamDocument<BsonDocument>, TResult> pipeline, ChangeStreamOptions options = null, CancellationToken cancellationToken = default)
-        {
-            return _configuration.Database.WatchAsync<TResult>(session, pipeline, options, cancellationToken);
-        }
-
-        /// <inheritdoc/>
         public IMongoDatabase WithReadConcern(ReadConcern readConcern)
         {
             return _configuration.Database.WithReadConcern(readConcern);

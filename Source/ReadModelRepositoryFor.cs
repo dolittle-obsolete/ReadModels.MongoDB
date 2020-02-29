@@ -57,7 +57,7 @@ namespace Dolittle.ReadModels.MongoDB
             var id = readModel.GetObjectIdFrom();
 
             var filter = Builders<T>.Filter.Eq("_id", id);
-            _collection.ReplaceOne(filter, readModel, new UpdateOptions() { IsUpsert = true });
+            _collection.ReplaceOne(filter, readModel, new ReplaceOptions() { IsUpsert = true });
         }
 
         static string RemoveReadNamespace(string source)

@@ -8,6 +8,8 @@ using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
 
+#pragma warning disable CS0618
+
 namespace Dolittle.ReadModels.MongoDB
 {
     /// <summary>
@@ -529,30 +531,6 @@ namespace Dolittle.ReadModels.MongoDB
         public Task<UpdateResult> UpdateOneAsync(IClientSessionHandle session, FilterDefinition<T> filter, UpdateDefinition<T> update, UpdateOptions options = null, CancellationToken cancellationToken = default)
         {
             return _actualCollection.UpdateOneAsync(session, filter, update, options, cancellationToken);
-        }
-
-        /// <inheritdoc/>
-        public IAsyncCursor<TResult> Watch<TResult>(PipelineDefinition<ChangeStreamDocument<T>, TResult> pipeline, ChangeStreamOptions options = null, CancellationToken cancellationToken = default)
-        {
-            return _actualCollection.Watch(pipeline, options, cancellationToken);
-        }
-
-        /// <inheritdoc/>
-        public IAsyncCursor<TResult> Watch<TResult>(IClientSessionHandle session, PipelineDefinition<ChangeStreamDocument<T>, TResult> pipeline, ChangeStreamOptions options = null, CancellationToken cancellationToken = default)
-        {
-            return _actualCollection.Watch(session, pipeline, options, cancellationToken);
-        }
-
-        /// <inheritdoc/>
-        public Task<IChangeStreamCursor<TResult>> WatchAsync<TResult>(PipelineDefinition<ChangeStreamDocument<T>, TResult> pipeline, ChangeStreamOptions options = null, CancellationToken cancellationToken = default)
-        {
-            return _actualCollection.WatchAsync(pipeline, options, cancellationToken);
-        }
-
-        /// <inheritdoc/>
-        public Task<IChangeStreamCursor<TResult>> WatchAsync<TResult>(IClientSessionHandle session, PipelineDefinition<ChangeStreamDocument<T>, TResult> pipeline, ChangeStreamOptions options = null, CancellationToken cancellationToken = default)
-        {
-            return _actualCollection.WatchAsync(session, pipeline, options, cancellationToken);
         }
 
         /// <inheritdoc/>
