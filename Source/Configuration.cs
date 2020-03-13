@@ -32,7 +32,9 @@ namespace Dolittle.ReadModels.MongoDB
                         CheckCertificateRevocation = false
                     };
                 }
+
                 s.GuidRepresentation = GuidRepresentation.Standard;
+
                 Client = new MongoClient(s);
             }
             else
