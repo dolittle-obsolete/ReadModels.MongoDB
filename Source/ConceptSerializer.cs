@@ -2,7 +2,6 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System;
-using System.Globalization;
 using System.Reflection;
 using Dolittle.Concepts;
 using MongoDB.Bson;
@@ -107,7 +106,7 @@ namespace Dolittle.ReadModels.MongoDB
             }
             else if (underlyingValueType == typeof(decimal))
             {
-                bsonWriter.WriteString(underlyingValue?.ToString() ?? default(decimal).ToString(CultureInfo.InvariantCulture));
+                bsonWriter.WriteDecimal128((decimal)(underlyingValue ?? default(decimal)));
             }
         }
 
@@ -161,7 +160,7 @@ namespace Dolittle.ReadModels.MongoDB
             }
             else if (valueType == typeof(decimal))
             {
-                return decimal.Parse(bsonReader.ReadString(), CultureInfo.InvariantCulture);
+                return bsonReader.ReadDecimal128();
             }
 
             throw new FailedConceptSerialization($"Could not deserialize the concept value to '{valueType.FullName}'");
