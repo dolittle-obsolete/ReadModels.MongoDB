@@ -1,6 +1,6 @@
 <Project>
     <PropertyGroup>
-        <FundamentalsVersion>5.0.0-alpha*</FundamentalsVersion>
-        <SDKVersion>5.0.0-alpha*</SDKVersion>
+        <FundamentalsVersion>5.0.0-rc*</FundamentalsVersion>
+        <SDKVersion>5.0.0-rc*</SDKVersion>
     </PropertyGroup>
 </Project>
