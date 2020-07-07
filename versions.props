@@ -1,0 +1,6 @@
+<Project>
+    <PropertyGroup>
+        <FundamentalsVersion>5.*</FundamentalsVersion>
+        <SDKVersion>5.*</SDKVersion>
+    </PropertyGroup>
+</Project>
